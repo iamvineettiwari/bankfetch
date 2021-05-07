@@ -34,14 +34,11 @@ module.exports = async (req, res, next) => {
 
     const result = await db.query(searchFor);
 
-    if (result) {
+    if (result && result.rowCount) {
       return res.json(responses.successResponse(result));
     }
 
-    return res.status(404).json({
-      success: false,
-      error: "not found",
-    });
+    return res.status(404).json(responses.errorResponse("Not Found"));
   } catch (error) {
     return res.status(500).json(responses.errorResponse(error.message));
   }
